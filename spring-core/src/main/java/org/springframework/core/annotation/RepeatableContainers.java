@@ -39,6 +39,15 @@ import org.springframework.util.ReflectionUtils;
  *
  * <p>To completely disable repeatable support use {@link #none()}.
  *
+ * 用于确定充当其他
+ * 注释容器的注释的策略。 {@link #standardRepeatables（）}方法提供了一个默认的
+ * 策略，它尊重Java的{@link Repeatable @Repeatable}支持，
+ * 应该适合大多数情况。
+ *
+ * <p> {@link #of}方法可用于注册不希望使用{@link Repeatable @Repeatable}的
+ * 注释的关系。
+ *
+ * <p>要完全禁用可重复支持，请使用{@link #none（）}。 *
  * @author Phillip Webb
  * @since 5.2
  */

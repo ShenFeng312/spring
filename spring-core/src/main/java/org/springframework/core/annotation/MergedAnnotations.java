@@ -318,10 +318,23 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * annotations considered
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
+	 *
+	 *
+	 * 创建一个新的{@link MergedAnnotations}实例，其中包含来自指定元素的所有
+	 * 注释和元注释，以及
+	 * 取决于{@link SearchStrategy}相关的继承元素。
+	 * @param element 源元素
+	 * @param searchStrategy 搜索策略使用
+	 * @param repeatableContainers 可重复使用的容器
+	 * 元素注释或元注释
+	 * @param annotationFilter 用于限制
+	 * 注释的注释过滤器考虑
+	 * @return 包含合并的
+	 * 元素注释的{@link MergedAnnotations}实例
 	 */
 	static MergedAnnotations from(AnnotatedElement element, SearchStrategy searchStrategy,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter) {
-
+		//Class<T> 实现了AnnotatedElement 接口 向上转型
 		return TypeMappedAnnotations.from(element, searchStrategy, repeatableContainers, annotationFilter);
 	}
 
@@ -404,6 +417,9 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		 * Find only directly declared annotations, without considering
 		 * {@link Inherited @Inherited} annotations and without searching
 		 * superclasses or implemented interfaces.
+		 * 仅查找直接声明的注释，而不考虑
+		 * {@link Inherited @Inherited}（继承）注释，无需搜索
+		 * 超类或实现的接口
 		 */
 		DIRECT,
 
@@ -449,6 +465,13 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		 * need to be meta-annotated with {@link Inherited @Inherited}. When
 		 * searching a {@link Method} source, this strategy is identical to
 		 * {@link #TYPE_HIERARCHY}.
+		 *
+		 * 在源
+		 * <em>和</ em>任何封闭类上执行整个类型层次结构的完整搜索。此策略类似于
+		 * {@link #TYPE_HIERARCHY}，但也会搜索{@linkplain Class＃getEnclosingClass（）
+		 * 封闭类}。超类注释不需要使用{@link Inherited @Inherited}进行元注释。当
+		 * 搜索{@link Method}源时，此策略与
+		 * {@link #TYPE_HIERARCHY}相同。
 		 */
 		TYPE_HIERARCHY_AND_ENCLOSING_CLASSES
 	}

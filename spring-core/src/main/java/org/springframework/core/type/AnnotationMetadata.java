@@ -122,6 +122,12 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * @param type the class to introspect
 	 * @return a new {@link AnnotationMetadata} instance
 	 * @since 5.2
+	 *
+	 * 使用标准反射为给定类创建新的{@link AnnotationMetadata}实例
+	 * 的工厂方法。
+	 * @param type 需要内省的类
+	 * @return 一个新的 {@link AnnotationMetadata}实例
+	 * @since 5.2
 	 */
 	static AnnotationMetadata introspect(Class<?> type) {
 		return StandardAnnotationMetadata.from(type);

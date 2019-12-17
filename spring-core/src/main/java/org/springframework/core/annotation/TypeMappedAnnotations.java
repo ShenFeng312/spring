@@ -35,6 +35,8 @@ import org.springframework.lang.Nullable;
  * {@link MergedAnnotations} implementation that searches for and adapts
  * annotations and meta-annotations using {@link AnnotationTypeMappings}.
  *
+ * {@link MergedAnnotations}实现，使用{@link AnnotationTypeMappings}搜索和调
+ *注释和元注释。
  * @author Phillip Webb
  * @since 5.2
  */
@@ -249,10 +251,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 	static MergedAnnotations from(AnnotatedElement element, SearchStrategy searchStrategy,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter) {
-
+		//判断不可能存存可以注入的bean直接返回
 		if (AnnotationsScanner.isKnownEmpty(element, searchStrategy)) {
 			return NONE;
 		}
+
 		return new TypeMappedAnnotations(element, searchStrategy, repeatableContainers, annotationFilter);
 	}
 

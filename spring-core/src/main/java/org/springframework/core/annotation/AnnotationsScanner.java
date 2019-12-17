@@ -499,6 +499,7 @@ abstract class AnnotationsScanner {
 	}
 
 	static boolean isKnownEmpty(AnnotatedElement source, SearchStrategy searchStrategy) {
+		//判断是否是JDK源码中的类或者是org.springframework.core.Ordered 这个类如果是返回true;
 		if (hasPlainJavaAnnotationsOnly(source)) {
 			return true;
 		}
@@ -533,6 +534,7 @@ abstract class AnnotationsScanner {
 		}
 		if (source instanceof Class) {
 			Class<?> sourceClass = (Class<?>) source;
+			//如果他的父类是Object 并且没有继承其他接口则不会有可继承的注解
 			boolean noSuperTypes = (sourceClass.getSuperclass() == Object.class &&
 					sourceClass.getInterfaces().length == 0);
 			return (searchStrategy == SearchStrategy.TYPE_HIERARCHY_AND_ENCLOSING_CLASSES ? noSuperTypes &&

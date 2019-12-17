@@ -80,10 +80,24 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 	 * Use {@link MergedAnnotation#asMap(org.springframework.core.annotation.MergedAnnotation.Adapt...) MergedAnnotation.asMap}
 	 * from {@link #getAnnotations()} rather than {@link #getAnnotationAttributes(String)}
 	 * if {@code nestedAnnotationsAsMap} is {@code false}
+	 *
+	 * 为给定的类创建一个新的{@link StandardAnnotationMetadata}包装器，
+	 * 提供以{@link org.springframework.core.annotation.AnnotationAttributes}的
+	 * 形式返回任何嵌套注释或注释数组的选项，而不是
+	 * 实际{ @link Annotation}实例。
+	 * @param introspectedClass Class to introspect
+	 * @param nestedAnnotationsAsMap 将嵌套注释和注释数组返回为
+	 * {@link org.springframework.core.annotation.AnnotationAttributes}，以实现与基于ASM的{@link AnnotationMetadata}实现的兼容性
+	 * @since 3.1 .1
+	 * @deprecated 自5.2以来赞成工厂方法 {@link AnnotationMetadata#introspect(Class)}。
+	 * 使用{@link MergedAnnotation＃asMap（org.springframework.core.annotation.MergedAnnotation.Adapt ...）MergedAnnotation.asMap}
+	 * 来自{@link #getAnnotations（）}而不是 {@link #getAnnotationAttributes(String)}
+	 * 如果{@code nestedAnnotationsAsMap}是{@code false}
 	 */
 	@Deprecated
 	public StandardAnnotationMetadata(Class<?> introspectedClass, boolean nestedAnnotationsAsMap) {
 		super(introspectedClass);
+		//第二个参数搜索策略 不搜索继承的注解 第三个参数不可重复使用容器 第四个参数过滤器不过滤任何注解
 		this.mergedAnnotations = MergedAnnotations.from(introspectedClass,
 				SearchStrategy.DIRECT, RepeatableContainers.none(),
 				AnnotationFilter.NONE);

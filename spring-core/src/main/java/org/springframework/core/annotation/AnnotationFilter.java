@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 /**
  * Callback interface that can be used to filter specific annotation types.
  *
+ * 回调接口，可用于过滤特定的注释类型。
  * @author Phillip Webb
  * @since 5.2
  */
@@ -43,6 +44,8 @@ public interface AnnotationFilter {
 	/**
 	 * {@link AnnotationFilter} that never matches and can be used when no
 	 * filtering is needed.
+	 * {@link AnnotationFilter}从不匹配，可以在不需要
+	 * 过滤时使用。
 	 */
 	AnnotationFilter NONE = new AnnotationFilter() {
 		@Override

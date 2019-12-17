@@ -66,6 +66,12 @@ class ConditionEvaluator {
 	 * {@code @Configuration} class will be {@link ConfigurationPhase#PARSE_CONFIGURATION})
 	 * @param metadata the meta data
 	 * @return if the item should be skipped
+	 *
+	 * 根据{@code @Conditional}注释确定是否应跳过某个项目。
+	 * {@link ConfigurationPhase}将从项目类型中推断出（即
+	 * {@code @Configuration}类将为{@link ConfigurationPhase＃PARSE_CONFIGURATION}）
+	 * @param metadata 元数据
+	 * @return 如果项目应该被跳过
 	 */
 	public boolean shouldSkip(AnnotatedTypeMetadata metadata) {
 		return shouldSkip(metadata, null);
@@ -76,8 +82,14 @@ class ConditionEvaluator {
 	 * @param metadata the meta data
 	 * @param phase the phase of the call
 	 * @return if the item should be skipped
+	 *
+	 * 根据{@code @Conditional}注释确定是否应跳过某个项目。
+	 * @param metadata 元数据
+	 * @param phase 调用阶段
+	 * @return 是否应该跳过该项目
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
+		//如果没有被Conditional标记则返回false  有则继续判断 metadata可以是方法也可以是类的
 		if (metadata == null || !metadata.isAnnotated(Conditional.class.getName())) {
 			return false;
 		}

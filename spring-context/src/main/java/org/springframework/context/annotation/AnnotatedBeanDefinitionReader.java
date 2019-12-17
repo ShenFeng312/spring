@@ -38,6 +38,9 @@ import org.springframework.util.Assert;
  * This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying
  * the same resolution of annotations but for explicitly registered classes only.
  *
+ * 方便的适配器，用于注释bean类的编程注册。
+ * 这是{@link ClassPathBeanDefinitionScanner}的替代方法，应用
+ * 相同的注释分辨率，但仅适用于明确注册的类。
  * @author Juergen Hoeller
  * @author Chris Beams
  * @author Sam Brannen
@@ -130,6 +133,12 @@ public class AnnotatedBeanDefinitionReader {
 	 * annotated class more than once has no additional effect.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
+	 *
+	 * 注册一个或多个要处理的注释类。
+	 * <p>对{@code register}的调用是幂等的;多次添加相同的
+	 *注释类没有额外的影响。
+	 * @param annotatedClasses 一个或多个带注释的类，例如
+	 * {@link Configuration @Configuration}类
 	 */
 	public void register(Class<?>... annotatedClasses) {
 		for (Class<?> annotatedClass : annotatedClasses) {
@@ -141,6 +150,10 @@ public class AnnotatedBeanDefinitionReader {
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
 	 * @param annotatedClass the class of the bean
+	 *
+	 * 从给定的bean类注册bean，从
+	 * class声明的注释中派生其元数据。
+	 * @param annotatedClass bean的类
 	 */
 	public void registerBean(Class<?> annotatedClass) {
 		doRegisterBean(annotatedClass, null, null, null, null);
@@ -244,6 +257,18 @@ public class AnnotatedBeanDefinitionReader {
 	 * @param customizers one or more callbacks for customizing the factory's
 	 * {@link BeanDefinition}, e.g. setting a lazy-init or primary flag
 	 * @since 5.0
+	 *
+	 * 从给定的bean类注册bean，从
+	 * class声明的注释中派生其元数据。
+	 * @param annotatedClass 提供bean的类
+	 * @param name bean的显式名称
+	 * @param supplier 用于创建bean实例的回调
+	 *（可能是{@code null}）
+	 * @param qualifiers 特定的限定符注释考虑，如果有的话，
+	 * 除了bean类级别的限定符
+	 * @param customizers 一个或多个回调用于自定义工厂的
+	 * {@link BeanDefinition}，例如设置一个lazy-init或主标志
+	 * @since 5.0
 	 */
 	private <T> void doRegisterBean(Class<T> annotatedClass, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,
@@ -255,6 +280,13 @@ public class AnnotatedBeanDefinitionReader {
 		}
 
 		abd.setInstanceSupplier(supplier);
+		/**
+		 * Scope，也称作用域，在 Spring IoC 容器是指其创建的 Bean 对象相对于其他 Bean 对象的请求可见范围。在 Spring IoC 容器中具有以下几种作用域：基本作用域（singleton、prototype），Web 作用域（reqeust、session、globalsession），自定义作用域。
+		 * 1、Spring 的作用域在装配 Bean 时就必须在配置文件中指明，配置方式如下（以 xml 配置文件为例）：
+		 * ————————————————
+		 * 版权声明：本文为CSDN博主「罗罗诺亚-小鱼」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+		 * 原文链接：https://blog.csdn.net/Tracycater/article/details/54019223
+		 */
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		abd.setScope(scopeMetadata.getScopeName());
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
