@@ -150,6 +150,7 @@ final class PostProcessorRegistrationDelegate {
 			if (processedBeans.contains(ppName)) {
 				// skip - already processed in first phase above
 			}
+
 			else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
 			}

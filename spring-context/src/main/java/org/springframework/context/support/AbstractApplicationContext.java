@@ -515,36 +515,48 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			//准备初始化
 			prepareRefresh();
-
+			//获取bean工厂
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-
+			//设置一些默认参数 类加载器。后置处理器和registerResolvableDependency、ignoreDependencyInterface不知道怎么翻译
 			// Prepare the bean factory for use in this context.
 			prepareBeanFactory(beanFactory);
 
 			try {
+				//空实现
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
+				//调用beanFactoryPostProcessors
+				//在初始化容器,创建reader时，已经自动创建了一个
+				//org.springframework.context.annotation.internalConfigurationAnnotationProcessor
+				//用于包扫描。bean的扫描在这个阶段完成。同时可以自己定义BeanDefinitionRegistryPostProcessor注入容器中干预这个过程
 
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				//为bean工厂注册bean的后置处理器
 				registerBeanPostProcessors(beanFactory);
-
+				//国际化信息开发没用到过直接忽略先
 				// Initialize message source for this context.
 				initMessageSource();
-
+				/**
+				 * 创建一个ApplicationEventMulticaster接口的简单实现。
+				 * 将所有事件多播给所有注册的侦听器，让侦听器忽略它们不感兴趣的事件。侦听器通常会对传入的事件对象执行相应的instanceof检查。
+				 * 默认情况下，在调用线程中调用所有侦听器。这允许恶意侦听器阻塞整个应用程序的危险，但增加了最小的开销。指定另一个任务执行器，
+				 * 使侦听器在不同的线程中执行，例如从线程p
+				 */
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
-
+				//空实现
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
-
+				//为ApplicationEventMulticaster注册Listeners
 				// Check for listener beans and register them.
 				registerListeners();
-
+				//初始化单例的bean并自动装配
 				// Instantiate all remaining (non-lazy-init) singletons.
 				finishBeanFactoryInitialization(beanFactory);
 

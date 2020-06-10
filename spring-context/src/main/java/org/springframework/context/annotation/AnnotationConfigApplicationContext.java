@@ -106,8 +106,6 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * 创建一个新的AnnotationConfigApplicationContext，从给定的带注释的类派生bean定义
 	 * 并自动刷新上下文。
 	 * @param annotatedClasses 一个或多个带注解的类，例如* {@link Configuration @Configuration}类
-	 * 实验测试如果使用该方式类上不需要有任何注解只要是@Bean的方法就可以上麦的英文注释和翻译可能是错的
-	 * 并且
 	 * 细节问题之后调试源码再分析
 	 *
 	 */
@@ -116,6 +114,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		this();
 		//注册配置项 正在的生成bean 需要在refresh()中去构建
 		register(annotatedClasses);
+		//刷新容器同时初始化容器的一些配置
 		refresh();
 	}
 
@@ -123,7 +122,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * Create a new AnnotationConfigApplicationContext, scanning for bean definitions
 	 * in the given packages and automatically refreshing the context.
 	 * @param basePackages the packages to check for annotated classes
-	 * 创建一个新的AnnotationConfigApplicationContext，扫描给定包中的bean定义*并自动刷新上下文。
+	 * 创建一个新的AnnotationConfigApplicationContext，扫描给定包中的bean定义并自动刷新上下文。
 	 * @param basePackages 被扫描的包名
 	 */
 	public AnnotationConfigApplicationContext(String... basePackages) {
